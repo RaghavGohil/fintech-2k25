@@ -65,6 +65,9 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [predictionResult, setPredictionResult] = useState<string | null>(null);
 
+  // Read backend URL from environment variable
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -78,11 +81,10 @@ const Home = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Browser validation will ensure all fields are filled because they are required.
     setLoading(true);
     setPredictionResult(null);
     try {
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch(`${backendUrl}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
